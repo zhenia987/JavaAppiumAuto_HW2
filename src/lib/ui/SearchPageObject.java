@@ -12,8 +12,11 @@ public class SearchPageObject extends MainPageObject{
             SEARCH_SKIP = "org.wikipedia:id/fragment_onboarding_skip_button",
             SEARCH_INIT_ELEMENT = "//*[contains(@text, 'Search Wikipedia')]",
             SEARCH_INPUT = "//*[contains(@text, 'Search Wikipedia')]",
-            SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@text='{SUBSTRING}']";
-
+            SEARCH_BACK_BUTTON = "//*[@content-desc='Navigate up']",
+            SEARCH_CLOSE_BUTTON = "org.wikipedia:id/search_close_bt",
+            SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@text='{SUBSTRING}']",
+            SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_title']",
+            SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results']";
 
 
     //Иницилизируем аппиум драйвер из mainPageObject
@@ -52,9 +55,60 @@ public class SearchPageObject extends MainPageObject{
         this.waitForElementSendKeys(By.xpath(SEARCH_INPUT), search_line, "Cannot find and type into search line", 5);
     }
 
+    //Метод для поиска результата
     public void waitForSearchResult(String substring)
     {
         String search_result_xpath = getResultSearchElement(substring);
         this.waitForElementPresent(By.xpath(search_result_xpath), "Can not find result with substring " + substring);
     }
+
+    //Метод для ожидания кнопки Стрелка-назад
+    public void waitForBackButtonToAppear()
+    {
+        this.waitForElementPresent(By.xpath(SEARCH_BACK_BUTTON), "Cannot find  Back button", 5);
+    }
+    //Тут же пишем метод, который будет ожидание отсутствия этой кнопки "Стрелка-назад" по окончании теста
+    public void waitForBackButtonToDisappear()
+    {
+        this.waitForElementNotPresent(By.xpath(SEARCH_BACK_BUTTON), "Back button is still present", 5);
+    }
+    //Метод для клика по кнопке Стрелка-назад
+    public void clickBackSearch()
+    {
+        this.waitForElementForClick(By.xpath(SEARCH_BACK_BUTTON), "Cannot find and click Back button", 5);
+    }
+
+    //Метод для клика по статье, которую находит в поиске
+    public void clickByArticleWithSubstring (String substring)
+    {
+        String search_result_xpath = getResultSearchElement(substring);
+        this.waitForElementForClick(By.xpath(search_result_xpath), "Can not find and click result with substring " + substring, 10);
+    }
+
+
+    //Метод для подсчета колличества статей Урок 5-07
+    public  int getAmountOfFoundArticle()
+    {
+       this.waitForElementPresent(
+                By.xpath(SEARCH_RESULT_ELEMENT),
+                "Can not find enything by the request ",
+                15
+        );
+        //Получаем колличество найденных элементов через метод getAmountElements
+       return this.getAmountElements(By.xpath(SEARCH_RESULT_ELEMENT));
+    }
+
+    public void waitForEmptyResultsLables()
+    {
+     this.waitForElementPresent(By.xpath(SEARCH_EMPTY_RESULT_ELEMENT), "Cannot finde empty result element", 15);
+    }
+
+    public  void assertThereIsNotResultOfSearch()
+    {
+        this.assertElementNotPresent(
+                By.xpath(SEARCH_RESULT_ELEMENT),
+                "We supposed not to find any results"
+        );
+    }
+
 }
