@@ -8,8 +8,8 @@ public class MyListPageObject extends MainPageObject {
     //
     public static final String
                 //Специальная константа значение которой потом будет подменять на значение нашей переменной name_of_folder
-                FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']",
-                ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']";
+                FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
+                ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
 
     //Метод который будет заменять значение константы FOLDER_BY_NAME_TPL на значение name_of_folder
     private static String getFolderXpathByName(String name_of_folder)
@@ -34,7 +34,7 @@ public class MyListPageObject extends MainPageObject {
         String folder_name_xpath = getFolderXpathByName(name_of_folder);
         //Тапаем по нашей статье
         this.waitForElementForClick(
-                By.xpath(folder_name_xpath),
+                folder_name_xpath,
                 "Can not find folder by name" + name_of_folder,
                 20
         );
@@ -43,7 +43,7 @@ public class MyListPageObject extends MainPageObject {
     public void waitForArticleToAppearByTitle (String article_title) {
         String article_xpath = getFolderXpathByName(article_title);
         this.waitForElementPresent(
-                By.xpath(article_xpath),
+                article_xpath,
                 "Cannot find saved article by title" + article_title,
                 15
         );
@@ -52,7 +52,7 @@ public class MyListPageObject extends MainPageObject {
     public void waitForArticleToDisappearByTitle (String article_title) {
         String article_xpath = getFolderXpathByName(article_title);
         this.waitForElementNotPresent(
-                By.xpath(article_xpath),
+                article_xpath,
                 "Save article still present with title" + article_title,
                 15
         );
@@ -67,7 +67,7 @@ public class MyListPageObject extends MainPageObject {
         //делаем свайп
         String article_xpath = getFolderXpathByName(article_title);
         this.swipeElementToLeft(
-                By.xpath(article_xpath),
+                article_xpath,
                 "Not delete топик"
         );
         //Теперь используем метод waitForArticleToDisappearByTitle в этом методе

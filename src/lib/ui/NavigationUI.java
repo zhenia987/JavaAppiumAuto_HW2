@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 public class NavigationUI extends MainPageObject {
 
     private static final String
-            VIEW_LIST_BUTTON = "org.wikipedia:id/snackbar_action";
+            VIEW_LIST_BUTTON = "id:org.wikipedia:id/snackbar_action";
 
     public NavigationUI(AppiumDriver driver) {
         super(driver);
@@ -17,7 +17,7 @@ public class NavigationUI extends MainPageObject {
     public void clickToViewListButton()
     {
         this.waitForElementForClick(
-                By.id(VIEW_LIST_BUTTON),
+                VIEW_LIST_BUTTON,
                 "Can not fine and tap to View list ",
                 15
         );
